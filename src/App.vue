@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <a-input placeholder="请输入任务" class="my_ipt" />
-    <a-button type="primary">添加事项</a-button>
+    <a-input placeholder="请输入任务" class="my_ipt" :value="inputValue" @change="handleInputChange"/>
+    <a-button type="primary" @click="addItemToList">添加事项</a-button>
 
     <a-list bordered :dataSource="list" class="dt_list">
       <a-list-item slot="renderItem" slot-scope="item">
@@ -29,48 +29,55 @@
 </template>
 
 <script>
+
+import { mapState } from 'vuex'
+
 export default {
   name: 'app',
   data () {
     return {
-      list: [
-        {
-          id: 0,
-          info: 'Racing car sprays burning fuel into crowd.',
-          done: false
-        },
-        { id: 1, info: 'Japanese princess to wed commoner.', done: false },
-        {
-          id: 2,
-          info: 'Australian walks 100km after outback crash.',
-          done: false
-        },
-        { id: 3, info: 'Man charged over missing wedding girl.', done: false },
-        { id: 4, info: 'Los Angeles battles huge wildfires.', done: false }
-      ]
+    }
+  },
+  created () {
+    this.$store.dispatch('getList')
+  },
+  computed: {
+    ...mapState(['list', 'inputValue'])
+  },
+  methods: {
+    // 监听文本框内容改变
+    handleInputChange (e) {
+      // console.log(e.target.value)
+      this.$store.commit('setInputValue', e.target.value)
+    },
+    addItemToList () {
+      if (this.inputValue.trim().length === 0) {
+        return this.$message.warning('文本框内容不能为空')
+      }
+      this.$store.commit('addItem')
     }
   }
 }
 </script>
 
 <style scoped>
-#app {
-  padding: 10px;
-}
+  #app {
+    width: 500px;
+    margin: 200px auto;
+  }
+  .my_ipt {
+    width: 400px;
+    margin-right: 10px;
+  }
 
-.my_ipt {
-  width: 500px;
-  margin-right: 10px;
-}
+  .dt_list {
+    width: 500px;
+    margin-top: 10px;
+  }
 
-.dt_list {
-  width: 500px;
-  margin-top: 10px;
-}
-
-.footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 </style>
