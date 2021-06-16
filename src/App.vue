@@ -14,7 +14,7 @@
       <!-- footer区域 -->
       <div slot="footer" class="footer">
         <!-- 未完成的任务个数 -->
-        <span>0条剩余</span>
+        <span>{{unDoneLength}}条剩余</span>
         <!-- 操作按钮 -->
         <a-button-group>
           <a-button type="primary">全部</a-button>
@@ -22,7 +22,7 @@
           <a-button>已完成</a-button>
         </a-button-group>
         <!-- 把已经完成的任务清空 -->
-        <a>清除已完成</a>
+        <a @click="clearDone">清除已完成</a>
       </div>
     </a-list>
   </div>
@@ -30,7 +30,7 @@
 
 <script>
 
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'app',
@@ -42,7 +42,8 @@ export default {
     this.$store.dispatch('getList')
   },
   computed: {
-    ...mapState(['list', 'inputValue'])
+    ...mapState(['list', 'inputValue']),
+    ...mapGetters(['unDoneLength'])
   },
   methods: {
     // 监听文本框内容改变
@@ -68,6 +69,9 @@ export default {
         status: e.target.checked
       }
       this.$store.commit('changeStatus', param)
+    },
+    clearDone () {
+      this.$store.commit('clearn')
     }
   }
 }

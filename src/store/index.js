@@ -38,6 +38,9 @@ export default new Vuex.Store({
       if (i !== -1) {
         state.list[i].done = param.status
       }
+    },
+    clearn (state) {
+      state.list = state.list.filter(x => x.done === false)
     }
   },
   actions: {
@@ -46,6 +49,11 @@ export default new Vuex.Store({
         console.log(data)
         context.commit('initList', data)
       })
+    }
+  },
+  getters: {
+    unDoneLength (state) {
+      return state.list.filter(x => x.done === false).length
     }
   },
   modules: {
