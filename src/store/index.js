@@ -32,6 +32,12 @@ export default new Vuex.Store({
       if (i !== -1) {
         state.list.splice(i, 1)
       }
+    },
+    changeStatus (state, param) {
+      const i = state.list.findIndex(x => x.id === param.id)
+      if (i !== -1) {
+        state.list[i].done = param.status
+      }
     }
   },
   actions: {
