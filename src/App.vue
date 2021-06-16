@@ -3,7 +3,7 @@
     <a-input placeholder="请输入任务" class="my_ipt" :value="inputValue" @change="handleInputChange"/>
     <a-button type="primary" @click="addItemToList">添加事项</a-button>
 
-    <a-list bordered :dataSource="list" class="dt_list">
+    <a-list bordered :dataSource="infoList" class="dt_list">
       <a-list-item slot="renderItem" slot-scope="item">
         <!-- 复选框 -->
         <a-checkbox :checked="item.done" @change="(e) => {cbStateChange(e, item.id)}">{{item.info}}</a-checkbox>
@@ -17,9 +17,9 @@
         <span>{{unDoneLength}}条剩余</span>
         <!-- 操作按钮 -->
         <a-button-group>
-          <a-button type="primary">全部</a-button>
-          <a-button>未完成</a-button>
-          <a-button>已完成</a-button>
+          <a-button :type="viewKey === 'all'? 'primary' : ''" @click="changeStyle('all')">全部</a-button>
+          <a-button :type="viewKey === 'undone'? 'primary' : ''" @click="changeStyle('undone')">未完成</a-button>
+          <a-button :type="viewKey === 'done'? 'primary' : ''" @click="changeStyle('done')">已完成</a-button>
         </a-button-group>
         <!-- 把已经完成的任务清空 -->
         <a @click="clearDone">清除已完成</a>
@@ -42,8 +42,8 @@ export default {
     this.$store.dispatch('getList')
   },
   computed: {
-    ...mapState(['list', 'inputValue']),
-    ...mapGetters(['unDoneLength'])
+    ...mapState(['inputValue', 'viewKey']),
+    ...mapGetters(['unDoneLength', 'infoList'])
   },
   methods: {
     // 监听文本框内容改变
@@ -72,6 +72,9 @@ export default {
     },
     clearDone () {
       this.$store.commit('clearn')
+    },
+    changeStyle (key) {
+      this.$store.commit('changeViewKey', key)
     }
   }
 }

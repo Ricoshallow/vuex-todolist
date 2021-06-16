@@ -7,8 +7,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     list: [],
-    inputValue: 'LeBron won the fifth championship',
-    nextId: 5
+    inputValue: 'LeBron won the fifth MVP',
+    nextId: 5,
+    viewKey: 'all'
   },
   mutations: {
     initList (state, list) {
@@ -41,6 +42,9 @@ export default new Vuex.Store({
     },
     clearn (state) {
       state.list = state.list.filter(x => x.done === false)
+    },
+    changeViewKey (state, key) {
+      state.viewKey = key
     }
   },
   actions: {
@@ -54,6 +58,15 @@ export default new Vuex.Store({
   getters: {
     unDoneLength (state) {
       return state.list.filter(x => x.done === false).length
+    },
+    infoList (state) {
+      if (state.viewKey === 'all') {
+        return state.list
+      } else if (state.viewKey === 'undone') {
+        return state.list.filter(x => x.done === false)
+      } else {
+        return state.list.filter(x => x.done === true)
+      }
     }
   },
   modules: {

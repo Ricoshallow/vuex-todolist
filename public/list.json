@@ -10,8 +10,10 @@
     "info": "Australian walks 100km after outback crash.",
     "done": false
   },
-  { "id": 3, "info": "Man charged over missing wedding girl.", "done": false
+  { "id": 3, "info": "Man charged over missing wedding girl.", "done": true
   },
   { "id": 4, "info": "Los Angeles battles huge wildfires.", "done": false
+  },
+  { "id": 5, "info": "LeBron won the fifth championship.", "done": false
   }
 ]
